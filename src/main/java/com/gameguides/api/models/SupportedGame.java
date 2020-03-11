@@ -1,6 +1,7 @@
 package com.gameguides.api.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "supportedgames")
@@ -15,5 +16,9 @@ public class SupportedGame {
 
     @Column(name = "shorthand")
     public String shorthand;
+
+    @OneToMany(mappedBy = "game")
+    private List<Guide> guides;
+
 
 }
