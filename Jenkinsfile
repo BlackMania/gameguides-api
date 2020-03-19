@@ -4,6 +4,10 @@ pipeline {
         maven 'Maven 3.6.0'
         jdk 'JDK 8'
     }
+    environment {
+        ENV = test
+    }
+
 
    stages {
       stage('Build') {
