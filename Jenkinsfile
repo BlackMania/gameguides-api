@@ -5,7 +5,7 @@ pipeline {
         jdk 'JDK 8'
     }
     environment {
-        ENV = test
+        ENV = "test"
     }
 
 
