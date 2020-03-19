@@ -24,7 +24,6 @@ pipeline {
         sh 'mvn test'
      }
    }
-   stage('Build Jar')
    stage('Deploy') {
      steps {
        echo 'Deploying...'
