@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         ENV = "test"
-        SECRET_PASSPHRASE: ${{ secrets.PRODUCTION_PROPS }}
+        SECRET_PASSPHRASE: ${ secrets.PRODUCTION_PROPS }
     }
 
 
