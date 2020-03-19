@@ -16,9 +16,4 @@ public class SupportedGame {
 
     @Column(name = "shorthand")
     public String shorthand;
-
-    @OneToMany(mappedBy = "game")
-    private List<Guide> guides;
-
-
 }
