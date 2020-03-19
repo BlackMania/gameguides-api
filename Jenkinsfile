@@ -13,6 +13,7 @@ pipeline {
       stage('Build') {
         steps {
           echo 'Building...'
+          sh 'ls -a'
           echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
           sh 'mvn clean verify'
         }
@@ -23,6 +24,7 @@ pipeline {
         sh 'mvn test'
      }
    }
+   stage('Build Jar')
    stage('Deploy') {
      steps {
        echo 'Deploying...'
