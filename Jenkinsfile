@@ -13,7 +13,7 @@ pipeline {
       stage('Build') {
         steps {
           echo 'Building...'
-          sh 'ls -a target/classes/prod'
+          sh 'ls'
           sh 'decrypt_secret.sh'
           sh 'ls -a target/classes/prod'
           echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
