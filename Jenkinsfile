@@ -6,11 +6,12 @@ pipeline {
     }
     environment {
         ENV = "test"
+    }
+    environment {
         gpg_secret = credentials("gpg-secret")
-        gpg_trust = credentials("gpg-ownertrust")
+        gpg_trust = credentials("gpg-trust")
         gpg_passphrase = credentials("gpg-passphrase")
     }
-
     stages {
         stage("Import GPG Keys") {
             steps {
@@ -19,27 +20,23 @@ pipeline {
                     gpg --import-ownertrust $gpg_trust
                 """
             }
+            stage('Build') {
+                    steps {
+                      echo 'Building...'
+                      echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
+                      sh 'mvn clean verify'
+                    }
+               }
+               stage('Test') {
+                 steps {
+                    echo 'Testing...'
+                    sh 'mvn test'
+                 }
+               }
+               stage('Deploy') {
+                 steps {
+                   echo 'Deploying...'
+                 }
+               }
         }
-
-
-   stages {
-      stage('Build') {
-        steps {
-          echo 'Building...'
-          echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
-          sh 'mvn clean verify'
-        }
-   }
-   stage('Test') {
-     steps {
-        echo 'Testing...'
-        sh 'mvn test'
-     }
-   }
-   stage('Deploy') {
-     steps {
-       echo 'Deploying...'
-     }
-   }
-  }
 }
