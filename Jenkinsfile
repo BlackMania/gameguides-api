@@ -44,7 +44,7 @@ pipeline {
                     sh 'mvn clean install'
                    echo 'Deploying...'
                    sh "docker build -t vimuens/ggapi ."
-                   sh "docker run -e ENV='prod' --net='host' -p 8081:8081 vimuens/ggapi:latest"
+                   sh "docker run -d -e ENV='prod' --net='host' -p 8081:8081 vimuens/ggapi:latest"
                  }
                }
         }
