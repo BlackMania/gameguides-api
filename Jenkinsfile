@@ -5,7 +5,7 @@ pipeline {
         jdk 'JDK 8'
     }
     environment {
-        ENV = "prod"
+        ENV = "test"
         gpg_secret = credentials("gpg-secret")
         gpg_trust = credentials("gpg-ownertrust")
         gpg_passphrase = credentials("gpg-passphrase")
@@ -39,6 +39,9 @@ pipeline {
                  steps {
                    echo 'Deploying...'
                    echo 'Setting environment variable to production'
+                   env.ENV = "prod"
+                   docker "build --build-args=target/*.jar -t vimuens/ggapi"
+                   docker "run -p 8080:8080 vimuens/ggapi"
                  }
                }
         }
