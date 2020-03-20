@@ -14,8 +14,8 @@ pipeline {
         stage("Import GPG Keys") {
             steps {
                 sh """
-                    gpg --batch --import $gpg_secret
-                    gpg --import-ownertrust $gpg_trust
+                    gpg --batch --import ${gpg_secret}
+                    gpg --import-ownertrust ${gpg_trust}
                 """
             }
         }
