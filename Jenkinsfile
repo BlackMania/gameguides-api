@@ -16,7 +16,7 @@ pipeline {
                 sh "gpg --batch --import  ${env.gpg_secret}"
                 sh "gpg --import-ownertrust ${env.gpg_trust}"
                 sh """
-                                   cd $WORKSPACE/src/main/resources/prod/
+                                   cd $WORKSPACE
                                    git init
                                    git-secret reveal -p "$gpg_passphrase"
                                """
