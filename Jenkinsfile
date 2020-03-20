@@ -15,7 +15,6 @@ pipeline {
             steps {
                 sh "gpg --batch --import  ${env.gpg_secret}"
                 sh "gpg --import-ownertrust ${env.gpg_trust}"
-                cd "${WORKSPACE}/src/main/resources/prod"
                 sh "git init"
                 sh "git secret reveal -p ${gpg_passphrase}"
                 ls "-a /target/classes/prod"
