@@ -44,7 +44,7 @@ pipeline {
                     sh 'mvn clean install'
                    echo 'Deploying...'
                    sh "docker build  -t vimuens/ggapi $WORKSPACE"
-                   sh "docker run -p 8081:8081 vimuens/ggapi"
+                   sh "docker run -p 8081:8081 vimuens/ggapi:latest"
                  }
                }
         }
