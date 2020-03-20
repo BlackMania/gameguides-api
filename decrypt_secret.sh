@@ -2,5 +2,5 @@
 
 # Decrypt the file
 # --batch to prevent interactive command --yes to assume "yes" for questions
-gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
+gpg --quiet --batch --yes --decrypt --passphrase-file /etc/secret/secret_passphrase.txt \
 --output target/${ENV}/application.properties application.properties.gpg
