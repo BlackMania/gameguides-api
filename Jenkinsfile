@@ -7,7 +7,7 @@ pipeline {
     environment {
         ENV = "test"
         gpg_secret = credentials("gpg-secret")
-        gpg_trust = credentials("gpg-trust")
+        gpg_trust = credentials("gpg-ownertrust")
         gpg_passphrase = credentials("gpg-passphrase")
     }
     stages {
