@@ -13,8 +13,8 @@ pipeline {
     stages {
         stage("Import GPG Keys") {
             steps {
-                sh "gpg --import ${env.gpg_secret}"
-                sh "gpg --import ${env.trust}"
+                sh "gpg --batch --import  ${env.gpg_secret}"
+                sh "gpg --import-ownertrust ${env.trust}"
             }
         }
          stage('Build') {
