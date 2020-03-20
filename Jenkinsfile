@@ -33,17 +33,17 @@ pipeline {
                  steps {
                     echo 'Testing...'
                     sh 'mvn test'
+                    script {
+                       env.ENV = "prod"
+                       echo "Environment Variable ENV is set to: ${env.ENV}"
+                    }
                  }
                }
                stage('Deploy') {
                  steps {
+                    sh 'mvn clean install'
                    echo 'Deploying...'
-                   echo 'Setting environment variable to production'
-                   script {
-                    env.ENV = "prod"
-                    echo "Environment Variable ENV is set to: ${env.ENV}"
-                   }
-                   docker "build --build-args=target/*.jar -t vimuens/ggapi"
+                   docker "build -t vimuens/ggapi"
                    docker "run -p 8080:8080 vimuens/ggapi"
                  }
                }
