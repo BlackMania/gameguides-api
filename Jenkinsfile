@@ -39,7 +39,10 @@ pipeline {
                  steps {
                    echo 'Deploying...'
                    echo 'Setting environment variable to production'
-                   env.ENV = "prod"
+                   script {
+                    env.ENV = "prod"
+                    echo "Environment Variable ENV is set to: ${env.ENV}"
+                   }
                    docker "build --build-args=target/*.jar -t vimuens/ggapi"
                    docker "run -p 8080:8080 vimuens/ggapi"
                  }
