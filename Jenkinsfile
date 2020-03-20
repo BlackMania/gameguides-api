@@ -6,7 +6,6 @@ pipeline {
     }
     environment {
         ENV = "test"
-        SECRET_PASSPHRASE = ${ secrets.PRODUCTION_PROPS }
     }
 
 
@@ -15,7 +14,6 @@ pipeline {
         steps {
           echo 'Building...'
           sh 'ls -a target'
-          echo ${SECRET_PASSPHRASE}
           echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
           sh 'mvn clean verify'
         }
