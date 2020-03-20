@@ -43,7 +43,7 @@ pipeline {
                  steps {
                     sh 'mvn clean install'
                    echo 'Deploying...'
-                   sh "docker build  --build-args=target/*.jar -t vimuens/ggapi $WORKSPACE"
+                   sh "docker build  -t vimuens/ggapi $WORKSPACE"
                    sh "docker run -p 8080:8080 vimuens/ggapi"
                  }
                }
