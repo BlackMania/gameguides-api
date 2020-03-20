@@ -20,6 +20,8 @@ pipeline {
                                    git init
                                    git-secret reveal -p "$gpg_passphrase"
                                """
+
+                 ls "-a target/classes/prod"
             }
         }
          stage('Build') {
