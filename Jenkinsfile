@@ -43,7 +43,7 @@ pipeline {
                  steps {
                     sh 'mvn clean install'
                    echo 'Deploying...'
-                   sh "docker build -t vimuens/ggapi"
+                   sh "docker build -t vimuens/ggapi ."
                    sh "docker run -p 8080:8080 vimuens/ggapi"
                  }
                }
