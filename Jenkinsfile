@@ -39,8 +39,6 @@ pipeline {
                  steps {
                    echo 'Deploying...'
                    echo 'Setting environment variable to production'
-                   ENV = "prod"
-
                  }
                }
         }
