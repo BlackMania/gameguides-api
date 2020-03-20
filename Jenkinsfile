@@ -6,15 +6,26 @@ pipeline {
     }
     environment {
         ENV = "test"
+        gpg_secret = credentials("gpg-secret")
+        gpg_trust = credentials("gpg-ownertrust")
+        gpg_passphrase = credentials("gpg-passphrase")
     }
+
+    stages {
+        stage("Import GPG Keys") {
+            steps {
+                sh """
+                    gpg --batch --import $gpg_secret
+                    gpg --import-ownertrust $gpg_trust
+                """
+            }
+        }
 
 
    stages {
       stage('Build') {
         steps {
           echo 'Building...'
-          sh './decrypt_secret.sh'
-          sh 'ls -a target/classes/prod'
           echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
           sh 'mvn clean verify'
         }
