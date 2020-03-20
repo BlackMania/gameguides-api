@@ -5,7 +5,7 @@ pipeline {
         jdk 'JDK 8'
     }
     environment {
-        ENV = "test"
+        ENV = "prod"
         gpg_secret = credentials("gpg-secret")
         gpg_trust = credentials("gpg-ownertrust")
         gpg_passphrase = credentials("gpg-passphrase")
@@ -16,12 +16,10 @@ pipeline {
                 sh "gpg --batch --import  ${env.gpg_secret}"
                 sh "gpg --import-ownertrust ${env.gpg_trust}"
                 sh """
-                                   cd $WORKSPACE
-                                   git init
-                                   git-secret reveal -p "$gpg_passphrase"
-                               """
-
-                 sh "ls -a target/classes/prod"
+                     cd $WORKSPACE
+                     git init
+                     git-secret reveal -p "$gpg_passphrase"
+                   """
             }
         }
          stage('Build') {
@@ -40,6 +38,9 @@ pipeline {
                stage('Deploy') {
                  steps {
                    echo 'Deploying...'
+                   echo 'Setting environment variable to production'
+                   ENV = "prod"
+
                  }
                }
         }
