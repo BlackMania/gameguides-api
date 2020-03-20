@@ -21,7 +21,7 @@ pipeline {
                                    git-secret reveal -p "$gpg_passphrase"
                                """
 
-                 ls "-a target/classes/prod"
+                 sh "ls -a target/classes/prod"
             }
         }
          stage('Build') {
