@@ -2,6 +2,7 @@ package com.gameguides.api.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Type;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Table(name = "account")
 public class Account {
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private int id;
 

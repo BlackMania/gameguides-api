@@ -1,5 +1,7 @@
 package com.gameguides.api.models;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 import javax.persistence.*;
 import java.util.List;
 
