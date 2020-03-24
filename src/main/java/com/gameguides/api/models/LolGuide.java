@@ -23,6 +23,9 @@ public class LolGuide {
     @Column(name = "patchversion")
     public String patchversion;
 
+    @Column(name = "skills")
+    public String skills;
+
     @Column(name = "title")
     public String title;
 
