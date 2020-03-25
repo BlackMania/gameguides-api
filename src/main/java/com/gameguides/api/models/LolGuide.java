@@ -26,6 +26,9 @@ public class LolGuide {
     @Column(name = "skills")
     public String skills;
 
+    @Column(name = "runeset")
+    public String runeset;
+
     @Column(name = "title")
     public String title;
 
