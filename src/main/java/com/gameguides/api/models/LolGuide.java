@@ -1,12 +1,19 @@
 package com.gameguides.api.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Type;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.hibernate.annotations.TypeDef;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
+
+@TypeDef(
+        name = "json",
+        typeClass = JsonStringType.class
+)
 
 @Entity
 @Table(name = "lol_guides")
@@ -23,11 +30,13 @@ public class LolGuide {
     @Column(name = "patchversion")
     public String patchversion;
 
+    @Type( type = "json" )
     @Column(name = "skills")
-    public String skills;
+    public String[] skills;
 
+    @Type( type = "json" )
     @Column(name = "runeset")
-    public String runeset;
+    public Object runeset;
 
     @Column(name = "title")
     public String title;
