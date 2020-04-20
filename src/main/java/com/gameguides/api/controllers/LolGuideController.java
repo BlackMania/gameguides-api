@@ -1,4 +1,4 @@
-package com.gameguides.api.resources;
+package com.gameguides.api.controllers;
 
 import com.gameguides.api.models.LolGuide;
 import com.gameguides.api.repository.LolGuideRepository;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/gg/lol")
-public class LolGuideEndpoint {
+public class LolGuideController {
     @Autowired
     private LolGuideRepository lolGuideRepository;
 
