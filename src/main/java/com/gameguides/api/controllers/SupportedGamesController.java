@@ -1,4 +1,4 @@
-package com.gameguides.api.resources;
+package com.gameguides.api.controllers;
 
 import com.gameguides.api.models.SupportedGame;
 import com.gameguides.api.repository.SupportedGameRepository;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/gg")
-public class SupportedGamesEndpoint {
+public class SupportedGamesController {
 
     @Autowired
     private SupportedGameRepository supportedGameRepository;
