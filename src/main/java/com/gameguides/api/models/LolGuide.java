@@ -2,9 +2,10 @@ package com.gameguides.api.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -17,6 +18,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "lol_guides")
+@Getter
+@Setter
 public class LolGuide {
     @Id
     @GeneratedValue

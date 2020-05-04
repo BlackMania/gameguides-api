@@ -1,6 +1,8 @@
 package com.gameguides.api.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
@@ -10,6 +12,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "account")
+@Getter
+@Setter
 public class Account {
     @Id
     @GeneratedValue
@@ -24,10 +28,10 @@ public class Account {
     public String username;
 
     @Column(name = "password")
-    private String password;
+    public String password;
 
     @Column(name = "email")
-    private String email;
+    public String email;
 
     @OneToMany(mappedBy = "madeby")
     @JsonBackReference
