@@ -18,4 +18,8 @@ public class DTOConverter {
     {
         return modelMapper.map(account, AccountDTO.class);
     }
+
+    public static LolGuide convertToLolGuide(LolGuideDTO guide) {
+        return modelMapper.map(guide, LolGuide.class);
+    }
 }
