@@ -1,13 +1,13 @@
 package com.gameguides.api.controllers;
 
 import com.gameguides.api.repository.AccountRepository;
+import com.gameguides.api.services.authorisation.ScopeValidator;
 import com.gameguides.api.services.utils.DTOConverter;
 import com.gameguides.api.DTO.LolGuideDTO;
 import com.gameguides.api.models.LolGuide;
 import com.gameguides.api.repository.LolGuideRepository;
 import com.gameguides.api.services.authentication.AuthHandler;
 import com.gameguides.api.services.utils.JWTDecoder;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,10 +27,13 @@ public class LolGuideController {
     private LolGuideRepository lolGuideRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AuthHandler authHandler;
 
     @Autowired
-    private AuthHandler authHandler;
+    private ScopeValidator scopeValidator;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping("/guides")
     public List<LolGuideDTO> getGuides(@Param("page") int page, @Param("size") int size) {
@@ -51,9 +53,13 @@ public class LolGuideController {
     }
 
     @PostMapping("/guides/add")
-    public ResponseEntity<Object> addGuide(@RequestHeader("Authorization") String authToken, @RequestBody LolGuide guide) {
+    public ResponseEntity<Object> addGuide(@RequestHeader("Authorization") String authToken, @RequestBody LolGuideDTO guide) {
+        authToken = authToken.replace("Bearer ", "");
         if (authHandler.validateTokenAuthAttempt(authToken)) {
-            lolGuideRepository.save(guide);
+            LolGuide newGuide = DTOConverter.convertToLolGuide(guide);
+            newGuide.uuid =  UUID.randomUUID();
+            newGuide.madeby = accountRepository.findOneByUuid(UUID.fromString(JWTDecoder.getClientIdFromPayload(authToken)));
+            lolGuideRepository.save(newGuide);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
@@ -61,16 +67,26 @@ public class LolGuideController {
     @PutMapping("/guides/update/{id}")
     public ResponseEntity<Object> updateGuide(@RequestHeader("Authorization") String authToken, @PathVariable("id") String id, @RequestBody LolGuideDTO guide) {
         authToken = authToken.replace("Bearer ", "");
-        if (authHandler.validateTokenAuthAttempt(authToken)) {
-            JSONObject decodedToken = JWTDecoder.decodeJWTPayLoad(authToken);
-            if (decodedToken.getString("guides").contains(id)) {
-                LolGuide newGuide = DTOConverter.convertToLolGuide(guide);
-                LolGuide existingGuide = lolGuideRepository.findOneByUuid(newGuide.uuid);
-                existingGuide.skills = newGuide.skills;
-                existingGuide.runeset = newGuide.runeset;
-                lolGuideRepository.save(existingGuide);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
+        if (scopeValidator.isOwner(authToken, id)) {
+            if (lolGuideRepository.findOneByUuid(guide.uuid) == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            LolGuide existingGuide = lolGuideRepository.findOneByUuid(guide.uuid);
+            existingGuide.skills = guide.skills;
+            existingGuide.runeset = guide.runeset;
+            lolGuideRepository.save(existingGuide);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @DeleteMapping("/guides/delete/{id}")
+    public ResponseEntity<Object> deleteGuide(@RequestHeader("Authorization") String authToken, @PathVariable("id") String id)
+    {
+        authToken = authToken.replace("Bearer ", "");
+        if (scopeValidator.isOwner(authToken, id)) {
+            if (lolGuideRepository.findOneByUuid(UUID.fromString(id)) == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            LolGuide existingGuide = lolGuideRepository.findOneByUuid(UUID.fromString(id));
+            lolGuideRepository.delete(existingGuide);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
