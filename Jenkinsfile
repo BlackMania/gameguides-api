@@ -33,8 +33,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
+                sh "docker stop ggapi"
                 sh "docker build -t vimuens/ggapi:${BUILD_NUMBER} ."
                 sh "docker tag vimuens/ggapi:${BUILD_NUMBER} vimuens/ggapi:latest "
+                sh "docker start ggapi"
             }
         }
     }
