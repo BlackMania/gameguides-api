@@ -36,8 +36,8 @@ pipeline {
                 sh "docker stop ggapi"
                 sh "docker build -t vimuens/ggapi:${BUILD_NUMBER} ."
                 sh "docker tag vimuens/ggapi:${BUILD_NUMBER} vimuens/ggapi:latest "
-                sh "docker-compose up --build"
-                sh "docker start ggapi"
+                sh "docker rm --force ggapi"
+                sh "docker run -d --name ggapi -e ENV=prod vimuens/ggapi:latest"
             }
         }
     }
